@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as opt
-eps = 10e-5
 
 
 def f(x):
@@ -12,7 +11,7 @@ def f1(x):
     return 5 * np.cos(x) - 1
 
 
-def dichotomy_method(a, b):
+def dichotomy_method(a, b, eps):
     if f(a) * f(b) >= 0:
         return
     n = 1
@@ -27,7 +26,7 @@ def dichotomy_method(a, b):
     return x, n
 
 
-def chord_method(a, b):
+def chord_method(a, b, eps):
     if f(a) * f(b) >= 0:
         return
     n = 1
@@ -40,7 +39,7 @@ def chord_method(a, b):
     return xn, n
 
 
-def chord_tanget_method(a, b):
+def chord_tangent_method(a, b, eps):
     if f(a) * f(b) >= 0:
         return
     n = 1
@@ -59,19 +58,20 @@ def chord_tanget_method(a, b):
 
 A = 2.0
 B = 4.0
+e = 10e-4
 X = np.arange(A, B, 0.01)
 
-res1, count1 = dichotomy_method(A, B)
-res2, count2 = chord_method(A, B)
-res3, count3 = chord_tanget_method(A, B)
+res1, count1 = dichotomy_method(A, B, e)
+res2, count2 = chord_method(A, B, e)
+res3, count3 = chord_tangent_method(A, B, e)
 rest = opt.fsolve(f, A)[0]
-print("Half-division method: x = %0.5f" % res1)
+print("Half-division method: x = %0.4f" % res1)
 print("Number of iterations = %d\n" % count1)
-print("Chord method: x = %0.5f" % res2)
+print("Chord method: x = %0.4f" % res2)
 print("Number of iterations = %d\n" % count2)
-print("Chord and tangent method: x = %0.5f" % res3)
+print("Chord and tangent method: x = %0.4f" % res3)
 print("Number of iterations = %d\n" % count3)
-print("Check: x = %0.5f" % rest)
+print("Check: x = %0.4f" % rest)
 
 plt.grid(True)
 plt.plot(X, f(X), lw=2, color="green")
